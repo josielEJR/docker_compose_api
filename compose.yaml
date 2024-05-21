@@ -1,0 +1,35 @@
+networks:
+  minha_rede:
+
+services:
+  mysql:
+    image: mysql:5.7
+    container_name: database
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: websiteInfo
+      MYSQL_USER: database
+      MYSQL_PASSWORD: senha123
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin -uroot -proot ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./server/clientes.sql:/docker-entrypoint-initdb.d/clientes.sql
+      - ./server/imoveis.sql:/docker-entrypoint-initdb.d/imoveis.sql
+    networks:
+      - minha_rede
+    
+  api:
+    build: ./server/.
+    container_name: node-api
+    depends_on:
+      mysql:
+        condition: service_healthy
+    ports:
+      - "3000:3000"
+    networks:
+      - minha_rede
