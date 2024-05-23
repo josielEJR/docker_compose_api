@@ -49,7 +49,7 @@ app.post('/login', (req, res) => {
 // rota para cadastrar clientes
 app.post('/cadastrar', (req, res) => {
 
-    const { nome, email, senha, cpf } = req.body
+    const { nome, email, senha, cpf, celular } = req.body
 
     connection.query(`SELECT * FROM clientes`, (err, results, fields) => {
         let estaPresente = false
@@ -63,12 +63,12 @@ app.post('/cadastrar', (req, res) => {
             res.send({ mensagem: "usuário ja esta cadastrado" })
         } else {
             connection.query(
-                'INSERT INTO clientes (nome, email, senha, cpf) VALUES (?, ?, ?, ?)', [nome, email, senha, cpf], (err, result) => {
+                'INSERT INTO clientes (nome, email, senha, cpf, celular) VALUES (?, ?, ?, ?, ?)', [nome, email, senha, cpf, celular], (err, result) => {
                     if (err) {
                         console.log(err)
                     }
                     const newId = result.insertId
-                    res.send({ userID: newId, nome, email, senha, cpf })
+                    res.send({ userID: newId, nome, email, senha, cpf, celular })
                 }
             )
         }
