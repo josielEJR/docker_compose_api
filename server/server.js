@@ -271,3 +271,16 @@ app.get('/imoveis/aluguel', (req, res) => {
         res.json(results)
     })
 })
+// rota para pegar o imóvel pelo id 
+router.get('/:id', (req, res ) => {
+    const imovelID = req.params.id
+
+    let sqlQuery = 'SELECT * FROM imoveis WHERE imoveisID = ?'
+    connection.query(sqlQuery, [imovelID], (err, results) => {
+        if (err) {
+            console.error('Erro ao buscar imóvel por id:', err)
+            return res.status(500).json({ error: 'Erro ao buscar imóveis por id ' })
+        }
+        res.json(results)
+    })
+})
