@@ -279,7 +279,7 @@ app.get('/imoveis/aluguel', (req, res) => {
     })
 })
 // rota para pegar o imóvel pelo id 
-router.get('/:id', (req, res ) => {
+app.get('/:id', (req, res ) => {
     const imovelID = req.params.id
 
     let sqlQuery = 'SELECT * FROM imoveis WHERE imoveisID = ?'
