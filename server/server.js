@@ -123,7 +123,7 @@ app.post('/adicionar', (req, res) => {
 // Rota para buscar imóveis
 app.get('/imoveis/busca', (req, res) => {
     // Parâmetros para a busca
-    const { tipo, bairro, cidade, quartos, banheiros, precoVendaMin, precoVendaMax, precoAluguelMin, precoAluguelMax, qualidadeMax, qualidadeMin } = req.query
+        const { tipo, bairro, cidade, quartos, banheiros, disponibilidade, precoVendaMin, precoVendaMax, precoAluguelMin, precoAluguelMax, qualidadeMax, qualidadeMin } = req.query
 
     let sqlQuery = 'SELECT * FROM imoveis WHERE 1'
 
@@ -146,6 +146,13 @@ app.get('/imoveis/busca', (req, res) => {
     if (banheiros) {
         sqlQuery += ` AND banheiros = '${banheiros}'`
     }
+    if (disponibilidade === 'aluguel') {
+        sqlQuery += ` AND (disponibilidade = 'aluguel' OR disponibilidade = 'venda_e_aluguel') `
+    }
+    if (disponibilidade === 'venda') {
+        sqlQuery += ` AND (disponibilidade = 'venda' OR disponibilidade = 'venda_e_aluguel') `
+    }
+    
 
     if (precoVendaMin && precoVendaMax) {
         sqlQuery += ` AND preco_venda BETWEEN ${precoVendaMin} AND ${precoVendaMax}`
